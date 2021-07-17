@@ -87,7 +87,7 @@
     "lerna": "4.0.0",
     "lint-staged": "11.0.1",
     "memfs": "3.2.2",
-    "nock": "11.4.0",
+    "nock": "13.1.1",
     "prettier": "1.18.2",
     "stdout-stderr": "0.1.13",
     "symlink-dir": "5.0.1",
