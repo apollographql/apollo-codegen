@@ -94,7 +94,7 @@
     "ts-jest": "24.3.0",
     "ts-node": "9.1.1",
     "tslib": "1.14.1",
-    "typescript": "4.2.4",
+    "typescript": "4.3.5",
     "vsce": "1.95.1",
     "vscode": "1.1.37",
     "yarn": "1.22.10"
