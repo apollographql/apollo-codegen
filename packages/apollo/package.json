@@ -64,7 +64,7 @@
     "lodash.pickby": "4.6.0",
     "mkdirp": "1.0.4",
     "moment": "2.29.1",
-    "strip-ansi": "5.2.0",
+    "strip-ansi": "7.0.0",
     "table": "6.7.1",
     "tty": "1.0.1",
     "vscode-uri": "1.0.6"
