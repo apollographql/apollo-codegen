@@ -21,7 +21,6 @@
     "test": "jest",
     "test:ci": "npm run test -- --ci --maxWorkers=2",
     "test:ci:debug": "DEBUG=* node --inspect-brk=9001 node_modules/.bin/jest --runInBand",
-    "test:vscode": "lerna run test --scope=vscode-apollo",
     "circle": "npm run test:ci",
     "postcircle": "npm run lint",
     "lint": "prettier --list-different \"packages/*/src/**/*.{js,jsx,ts,tsx}\"",
@@ -29,9 +28,6 @@
     "posttest": "npm run lint",
     "release:version-bump": "lerna version --exact",
     "release:start-ci-publish": "node -p '`Publish (dist-tag:${process.env.APOLLO_DIST_TAG || \"latest\"})`' | git tag -F - \"publish/$(date -u '+%Y%m%d%H%M%S')\" && git push origin \"$(git describe --match='publish/*' --tags --exact-match HEAD)\"",
-    "package-extension": "npm run clean && npm ci && lerna run package-extension --stream --scope=vscode-apollo",
-    "package-extension:no-clean": "lerna run package-extension --stream --scope=vscode-apollo",
-    "publish-extension": "lerna run publish-extension --stream --scope=vscode-apollo",
     "client:codegen": "node ./packages/apollo/bin/run client:codegen --target=typescript --outputFlat ./packages/apollo-language-server/src/graphqlTypes.ts"
   },
   "engines": {
@@ -48,8 +44,7 @@
     "apollo-codegen-typescript": "file:packages/apollo-codegen-typescript",
     "apollo-env": "file:packages/apollo-env",
     "apollo-graphql": "file:packages/apollo-graphql",
-    "apollo-language-server": "file:packages/apollo-language-server",
-    "vscode-apollo": "file:packages/vscode-apollo"
+    "apollo-language-server": "file:packages/apollo-language-server"
   },
   "devDependencies": {
     "@fancy-test/nock": "0.1.1",
@@ -101,7 +96,7 @@
   },
   "jest": {
     "projects": [
-      "<rootDir>/packages/!(vscode-apollo)"
+      "<rootDir>/packages/*"
     ]
   },
   "lint-staged": {

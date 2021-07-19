@@ -15,6 +15,5 @@
     { "path": "./packages/apollo-graphql" },
     { "path": "./packages/apollo-language-server" },
     { "path": "./packages/apollo-tools" },
-    { "path": "./packages/vscode-apollo" }
   ]
 }
