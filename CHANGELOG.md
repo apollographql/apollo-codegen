@@ -19,7 +19,7 @@
 - `apollo-graphql`
   - <First `apollo-graphql` related entry goes here>
 - `apollo-language-server`
-  - <First `apollo-language-server` related entry goes here>
+  - Fix "TypeError: Cannot read property 'getFields' of undefined" when getting autocomplete suggestions. [1681](https://github.com/apollographql/apollo-tooling/pull/1681)
 - `apollo-tools`
   - <First `apollo-tools` related entry goes here>
 - `vscode-apollo`
