@@ -105,8 +105,8 @@ export function removeDirectives<AST extends ASTNode>(
 }
 
 /**
- * Recursively remove orphaned fragment definitions that have their names included in
- * `fragmentNamesEligibleForRemoval`
+ * Recursively remove orphaned fragment definitions and variables that have their names included in
+ * `fragmentNamesEligibleForRemoval` and `variablesEligibleForRemoval`, respectively.
  *
  * We expclitily require the fragments to be listed in `fragmentNamesEligibleForRemoval` so we only strip
  * fragments that were orphaned by an operation, not fragments that started as oprhans
@@ -114,9 +114,10 @@ export function removeDirectives<AST extends ASTNode>(
  * The `ast` param must extend ASTNode. We use a generic to indicate that this function returns the same type
  * of it's first parameter.
  */
-function removeOrphanedFragmentDefinitions<AST extends ASTNode>(
+function removeOrphanedFragmentDefinitionsAndVariables<AST extends ASTNode>(
   ast: AST,
-  fragmentNamesEligibleForRemoval: Set<string>
+  fragmentNamesEligibleForRemoval: Set<string>,
+  variablesEligibleForRemoval: Set<string>
 ): AST {
   /**
    * Flag to keep track of removing any fragments
@@ -125,14 +126,28 @@ function removeOrphanedFragmentDefinitions<AST extends ASTNode>(
 
   // Aquire names of all fragment spreads
   const fragmentSpreadNodeNames = new Set<string>();
+
+  // Aquire names of all variables (excluding operation definition variables)
+  const variableNodeNames = new Set<string>();
+
   visit(ast, {
     FragmentSpread(node) {
       fragmentSpreadNodeNames.add(node.name.value);
+    },
+    Variable(node, _key, parent) {
+      if (isNode(parent) && parent.kind !== Kind.VARIABLE_DEFINITION) {
+        variableNodeNames.add(node.name.value);
+      }
     }
   });
 
-  // Strip unused fragment definitions. Flag if we've removed any so we know if we need to continue
-  // recursively checking.
+  // Variable is marked for removal if it is eligible and unused
+  const variablesToRemove = new Set(
+    [...variablesEligibleForRemoval].filter(x => !variableNodeNames.has(x))
+  );
+
+  // Strip unused fragment definitions and variables. Flag if we've removed any fragment definitions so we
+  // know if we need to continue recursively checking.
   ast = visit(ast, {
     FragmentDefinition(node) {
       if (
@@ -145,6 +160,17 @@ function removeOrphanedFragmentDefinitions<AST extends ASTNode>(
       }
 
       return undefined;
+    },
+    OperationDefinition(node) {
+      return {
+        ...node,
+        // Remove matching top level variables definitions.
+        variableDefinitions:
+          node.variableDefinitions &&
+          node.variableDefinitions.filter(
+            varDef => !variablesToRemove.has(varDef.variable.name.value)
+          )
+      };
     }
   });
 
@@ -169,9 +195,10 @@ function removeOrphanedFragmentDefinitions<AST extends ASTNode>(
         nodes were removed on this pass; run another pass to see if there are more nodes that are now
         orphaned.
       */
-    return removeOrphanedFragmentDefinitions(
+    return removeOrphanedFragmentDefinitionsAndVariables(
       ast,
-      fragmentNamesEligibleForRemoval
+      fragmentNamesEligibleForRemoval,
+      variablesEligibleForRemoval
     );
   }
 
@@ -226,6 +253,11 @@ export function removeDirectiveAnnotatedFields<AST extends ASTNode>(
    */
   const removedFragmentSpreadNames = new Set<string>();
 
+  /**
+   * All variables that may be removed if unused after stripping directives
+   */
+  const variableNamesToMaybeRemove = new Set<string>();
+
   // Remove all nodes with a matching directive in `directiveNames`. Also, remove any operations that now have
   // no selection set
   ast = visit(ast, {
@@ -238,6 +270,31 @@ export function removeDirectiveAnnotatedFields<AST extends ASTNode>(
           directiveNames.includes(directive.name.value)
         )
       ) {
+        /*
+        If we're removing a field with arguments then save each variable that's referenced as part of an
+        argument. These variables will be removed from the definition if they are unused after removing this
+        field.
+
+        For example, assuming `@client` is a directive we want to remove and `$units` is not used elsewhere:
+        ```graphql
+        query clientObjectDistance($units: String!) {
+          clientObject {
+            id
+            distance(units: $units) @client
+          }
+        }
+        ```
+        */
+        if (node.kind === Kind.FIELD) {
+          if (node.arguments) {
+            node.arguments.forEach(arg => {
+              if (arg.value.kind === Kind.VARIABLE) {
+                variableNamesToMaybeRemove.add(arg.value.name.value);
+              }
+            });
+          }
+        }
+
         /*
         If we're removing a fragment definition then save the name so we can remove anywhere this fragment was
         spread. This happens when a fragment definition itself has a matching directive on it, like this
@@ -294,8 +351,12 @@ export function removeDirectiveAnnotatedFields<AST extends ASTNode>(
     }
   });
 
-  // Remove all orphaned fragment definitions
-  ast = removeOrphanedFragmentDefinitions(ast, removedFragmentSpreadNames);
+  // Remove all orphaned fragment definitions and variables
+  ast = removeOrphanedFragmentDefinitionsAndVariables(
+    ast,
+    removedFragmentSpreadNames,
+    variableNamesToMaybeRemove
+  );
 
   // Finally, remove nodes with empty selection sets
   return removeNodesWithEmptySelectionSets(ast);

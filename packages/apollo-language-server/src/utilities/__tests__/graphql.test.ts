@@ -117,6 +117,27 @@ describe("removeDirectiveAnnotatedFields", () => {
     `);
   });
 
+  it("should remove variables from definition if they are only used in annotated fields", () => {
+    expect(
+      print(
+        removeDirectiveAnnotatedFields(
+          parse(`
+            query Query($var1: String!, $var2: String!) {
+              fieldToKeep(var1: $var1)
+              fieldToRemove(var1: $var1, var2: $var2) @client
+            }
+          `),
+          ["client"]
+        )
+      )
+    ).toMatchInlineSnapshot(`
+      "query Query($var1: String!) {
+        fieldToKeep(var1: $var1)
+      }
+      "
+    `);
+  });
+
   it("should remove fragments when a directive is used on a fragment spread", () => {
     expect(
       print(
