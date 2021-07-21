@@ -73,6 +73,26 @@ input Duplicate {
 
 union UnionTestCase = PartialA | PartialB
 
+enum ManProps {
+  first
+  second
+}
+
+enum WomanProps {
+  third
+  fourth
+}
+
+type Man {
+  manProp: ManProps
+}
+
+type Woman {
+  womanProp: WomanProps
+}
+
+union Human = Man | Woman
+
 type Query {
   misc: OddType
   commentTest: CommentTest
@@ -80,6 +100,7 @@ type Query {
   unionTest: UnionTestCase
   scalarTest: Boolean!
   nesting: Nesting!
+  man: Man!
 }
 
 type Mutation {
