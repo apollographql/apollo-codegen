@@ -10,6 +10,7 @@ import { Debug } from "apollo-language-server";
 
 import { TargetType, default as generate } from "../../generate";
 import { ClientCommand } from "../../Command";
+import { OperationIdGenerator } from "apollo-codegen-core/src/compiler/visitors/generateOperationId";
 
 const waitForKey = async () => {
   console.log("Press any key to stop.");
@@ -71,6 +72,10 @@ export default class Generate extends ClientCommand {
     operationIdsPath: flags.string({
       description:
         "Path to an operation id JSON map file. If specified, also stores the operation ids (hashes) as properties on operation types [currently Swift-only]"
+    }),
+    operationIdGenerator: flags.string({
+      description:
+        "The path to custom operation id generator module. Example: export default (operationDocument: string) => md5(operationDocument)"
     }),
     only: flags.string({
       description:
@@ -213,6 +218,17 @@ export default class Generate extends ClientCommand {
                   kind: Kind.DOCUMENT,
                   definitions: [...operations, ...fragments]
                 };
+
+                let operationIdGenerator: OperationIdGenerator | undefined;
+                if (flags.operationIdGenerator) {
+                  const mod = require(path.join(
+                    process.cwd(),
+                    flags.operationIdGenerator
+                  ));
+                  operationIdGenerator =
+                    mod && mod.__esModule ? mod.default : mod;
+                }
+
                 return generate(
                   document,
                   schema,
@@ -232,6 +248,7 @@ export default class Generate extends ClientCommand {
                     namespace: flags.namespace,
                     operationIdsPath: flags.operationIdsPath,
                     generateOperationIds: !!flags.operationIdsPath,
+                    operationIdGenerator,
                     mergeInFieldsFromFragmentSpreads:
                       flags.mergeInFieldsFromFragmentSpreads,
                     useFlowExactObjects: flags.useFlowExactObjects,

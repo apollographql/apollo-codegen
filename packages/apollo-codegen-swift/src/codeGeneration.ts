@@ -248,7 +248,8 @@ export class SwiftAPIGenerator extends SwiftGenerator<CompilerContext> {
           const { operationId, sourceWithFragments } = generateOperationId(
             operation,
             fragments,
-            fragmentsReferenced
+            fragmentsReferenced,
+            this.context.options.operationIdGenerator
           );
           operation.operationId = operationId;
           operation.sourceWithFragments = sourceWithFragments;

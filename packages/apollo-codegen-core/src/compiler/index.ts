@@ -39,6 +39,7 @@ import {
   withTypenameFieldAddedWhereNeeded,
   isMetaFieldName
 } from "../utilities/graphql";
+import { OperationIdGenerator } from "./visitors/generateOperationId";
 
 export interface CompilerOptions {
   addTypename?: boolean;
@@ -47,6 +48,7 @@ export interface CompilerOptions {
   customScalarsPrefix?: string;
   namespace?: string;
   generateOperationIds?: boolean;
+  operationIdGenerator?: OperationIdGenerator;
   operationIdsPath?: string;
   // this option is only implemented in the ts codegen, so we name it
   // `ts` fileExtension for now.

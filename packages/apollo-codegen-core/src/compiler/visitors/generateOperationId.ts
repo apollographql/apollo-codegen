@@ -2,10 +2,21 @@ import { Operation, Fragment } from "../";
 import { collectFragmentsReferenced } from "./collectFragmentsReferenced";
 import { createHash } from "crypto";
 
+export interface OperationIdGenerator {
+  (operationDocument: string): string;
+}
+
+const Sha256IdGenerator: OperationIdGenerator = operationDocument => {
+  const hash = createHash("sha256");
+  hash.update(operationDocument);
+  return hash.digest("hex");
+};
+
 export function generateOperationId(
   operation: Operation,
   fragments: { [fragmentName: string]: Fragment },
-  fragmentsReferenced?: Iterable<string>
+  fragmentsReferenced?: Iterable<string>,
+  idGenerator: OperationIdGenerator = Sha256IdGenerator
 ) {
   if (!fragmentsReferenced) {
     fragmentsReferenced = collectFragmentsReferenced(
@@ -25,9 +36,6 @@ export function generateOperationId(
     })
   ].join("\n");
 
-  const hash = createHash("sha256");
-  hash.update(sourceWithFragments);
-  const operationId = hash.digest("hex");
-
+  const operationId = idGenerator(sourceWithFragments);
   return { operationId, sourceWithFragments };
 }
