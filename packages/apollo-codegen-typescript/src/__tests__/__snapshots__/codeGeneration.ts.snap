@@ -664,6 +664,89 @@ export interface HeroNameVariables {
 }
 `;
 
+exports[`Typescript codeGeneration local / global default value in mutation argument 1`] = `
+Object {
+  "common": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+/**
+ * The episodes in the Star Wars trilogy
+ */
+export enum Episode {
+  EMPIRE = \\"EMPIRE\\",
+  JEDI = \\"JEDI\\",
+  NEWHOPE = \\"NEWHOPE\\",
+}
+
+/**
+ * The input object sent when passing in a color
+ */
+export interface ColorInput {
+  red: number;
+  green: number;
+  blue: number;
+}
+
+/**
+ * The input object sent when someone is creating a new review
+ */
+export interface ReviewInput {
+  stars: number;
+  commentary?: string | null;
+  favorite_color?: ColorInput | null;
+}
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+  "generatedFiles": Array [
+    Object {
+      "content": TypescriptGeneratedFile {
+        "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: ReviewMovie
+// ====================================================
+
+export interface ReviewMovie_createReview {
+  __typename: \\"Review\\";
+  /**
+   * The number of stars this review gave, 1-5
+   */
+  stars: number;
+  /**
+   * Comment about the movie
+   */
+  commentary: string | null;
+}
+
+export interface ReviewMovie {
+  createReview: ReviewMovie_createReview | null;
+}
+
+export interface ReviewMovieVariables {
+  episode?: Episode;
+  review: ReviewInput;
+}
+",
+      },
+      "fileName": "ReviewMovie.ts",
+      "sourcePath": "GraphQL request",
+    },
+  ],
+}
+`;
+
 exports[`Typescript codeGeneration local / global duplicates 1`] = `
 Array [
   Object {

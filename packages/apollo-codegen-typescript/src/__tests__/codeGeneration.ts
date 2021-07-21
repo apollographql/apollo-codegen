@@ -634,4 +634,18 @@ describe("Typescript codeGeneration local / global", () => {
     expect(output).toMatchSnapshot();
     expect(generateGlobalSource(context)).toMatchSnapshot();
   });
+
+  test("default value in mutation argument", () => {
+    const context = compile(`
+      mutation ReviewMovie($episode: Episode! = NEWHOPE, $review: ReviewInput!) {
+        createReview(episode: $episode, review: $review) {
+          stars
+          commentary
+        }
+      }
+    `);
+
+    const output = generateSource(context);
+    expect(output).toMatchSnapshot();
+  });
 });
