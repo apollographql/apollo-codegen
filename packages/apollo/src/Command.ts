@@ -1,6 +1,6 @@
 import Command, { flags } from "@oclif/command";
 import Listr, { ListrTask } from "listr";
-import { parse, resolve } from "path";
+import { parse, resolve, basename } from "path";
 
 import {
   ApolloConfig,
@@ -135,7 +135,7 @@ export abstract class ProjectCommand extends Command {
     const service = flags.key ? getServiceFromKey(flags.key) : undefined;
     const config = await loadConfig({
       configPath: flags.config && parse(resolve(flags.config)).dir,
-      configFileName: flags.config,
+      configFileName: flags.config && basename(flags.config),
       name: service,
       type: this.type
     });
