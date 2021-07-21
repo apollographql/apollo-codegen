@@ -11,7 +11,7 @@
 - `apollo-codegen-swift`
   - <First `apollo-codegen-swift` related entry goes here>
 - `apollo-codegen-typescript`
-  - <First `apollo-codegen-typescript` related entry goes here>
+  - Don't generate globalTypes.ts when it is empty. [#2080](https://github.com/apollographql/apollo-tooling/issues/2080) [#2163](https://github.com/apollographql/apollo-tooling/pull/2163)
 - `apollo-codegen-core`
   - <First `apollo-codegen-core` related entry goes here>
 - `apollo-env`

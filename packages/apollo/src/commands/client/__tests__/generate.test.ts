@@ -441,9 +441,7 @@ describe("client:codegen", () => {
       expect(output).toMatchSnapshot();
     });
 
-  // TODO: fix UnhandledPromiseRejection
   test
-    .skip()
     .fs({
       "schema.json": fullSchemaJsonString,
       "components/component.tsx": `
@@ -471,9 +469,62 @@ describe("client:codegen", () => {
             .readFileSync("./components/__generated__/SimpleQuery.ts")
             .toString()
         ).toMatchSnapshot();
+      }
+    );
+
+  test
+    .fs({
+      "schema.json": fullSchemaJsonString,
+      "components/component.tsx": `
+        const query = gql\`
+          query SimpleQuery {
+            someEnum
+          }
+        \`;
+      `,
+      "my.config.js": `
+        module.exports = {
+          client: {
+            includes: ["./**.graphql", "./**/*.tsx"],
+            service: { name: "my-service-name", localSchemaFile: "./schema.json" }
+          }
+        }
+      `
+    })
+    .command(["client:codegen", "--target=typescript", "--config=my.config.js"])
+    .it(
+      "writes TypeScript global types to __generated__/globalTypes.ts when globalTypesFile is not set",
+      () => {
         expect(
           fs.readFileSync("./__generated__/globalTypes.ts").toString()
         ).toMatchSnapshot();
+      }
+    );
+
+  test
+    .fs({
+      "schema.json": fullSchemaJsonString,
+      "components/component.tsx": `
+        const query = gql\`
+          query SimpleQuery {
+            hello
+          }
+        \`;
+      `,
+      "my.config.js": `
+        module.exports = {
+          client: {
+            includes: ["./**.graphql", "./**/*.tsx"],
+            service: { name: "my-service-name", localSchemaFile: "./schema.json" }
+          }
+        }
+      `
+    })
+    .command(["client:codegen", "--target=typescript", "--config=my.config.js"])
+    .it(
+      "doesn't write an empty TypeScript global types file when it is empty",
+      () => {
+        expect(fs.existsSync("./__generated__/globalTypes.ts")).toBe(false);
       }
     );
 
@@ -547,9 +598,7 @@ describe("client:codegen", () => {
       }
     );
 
-  // TODO: fix unhandled rejection
   test
-    .skip()
     .fs({
       "schema.json": fullSchemaJsonString,
       "components/component.tsx": `
