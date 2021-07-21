@@ -16,12 +16,7 @@ type ValidationResult = graphqlTypes.ValidateOperations_service_validateOperatio
 interface Operation {
   body: string;
   name: string;
-  relativePath: string;
-  locationOffset: LocationOffset;
-}
-interface LocationOffset {
-  column: number;
-  line: number;
+  relativePaths: string[];
 }
 
 export default class ClientCheck extends ClientCommand {
@@ -48,15 +43,18 @@ export default class ClientCheck extends ClientCommand {
 
             ctx.operations = Object.entries(
               this.project.mergedOperationsAndFragmentsForService
-            ).map(([name, doc]) => ({
-              body: print(doc),
-              name,
-              relativePath: relative(
-                config.configURI ? config.configURI.fsPath : "",
-                URI.parse(doc.definitions[0].loc!.source.name).fsPath
-              ),
-              locationOffset: doc.definitions[0].loc!.source.locationOffset
-            }));
+            ).map(
+              ([name, doc]): Operation => ({
+                body: print(doc),
+                name,
+                relativePaths: doc.definitions.map(definition =>
+                  relative(
+                    config.configURI ? config.configURI.fsPath : "",
+                    URI.parse(definition.loc!.source.name).fsPath
+                  )
+                )
+              })
+            );
 
             ctx.validationResults = await project.engine.validateOperations({
               id: config.graph,
@@ -146,10 +144,8 @@ export default class ClientCheck extends ClientCommand {
     validationResults: ValidationResult[];
     operation: Operation;
   }) => {
-    const { name, locationOffset, relativePath } = operation;
-    this.log(
-      `${name}: ${chalk.cyan(`${relativePath}:${locationOffset.line}`)}\n`
-    );
+    const { name, relativePaths } = operation;
+    this.log(`${name}: ${chalk.cyan(`${relativePaths.join(",")}`)}\n`);
 
     const byErrorType = validationResults.reduce(
       (byError, validation) => {
