@@ -285,7 +285,8 @@ export class TypescriptAPIGenerator extends TypescriptGenerator {
             interfaceName,
             variables.map(variable => ({
               name: variable.name,
-              type: this.typeFromGraphQLType(variable.type)
+              type: this.typeFromGraphQLType(variable.type),
+              isConditional: false
             })),
             { keyInheritsNullability: true }
           )
@@ -559,7 +560,8 @@ export class TypescriptAPIGenerator extends TypescriptGenerator {
     return {
       name: field.alias ? field.alias : field.name,
       description: field.description,
-      type
+      type,
+      isConditional: field.isConditional || false
     };
   }
 
@@ -573,14 +575,16 @@ export class TypescriptAPIGenerator extends TypescriptGenerator {
       res = {
         name: field.alias ? field.alias : field.name,
         description: field.description,
-        type: t.TSUnionType(types)
+        type: t.TSUnionType(types),
+        isConditional: field.isConditional || false
       };
     } else {
       // TODO: Double check that this works
       res = {
         name: field.alias ? field.alias : field.name,
         description: field.description,
-        type: this.typeFromGraphQLType(field.type)
+        type: this.typeFromGraphQLType(field.type),
+        isConditional: field.isConditional || false
       };
     }
 

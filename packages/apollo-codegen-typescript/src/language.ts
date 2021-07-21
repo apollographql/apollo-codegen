@@ -14,6 +14,7 @@ export type ObjectProperty = {
   name: string;
   description?: string | null | undefined;
   type: t.TSType;
+  isConditional: boolean;
 };
 
 export default class TypescriptGenerator {
@@ -61,7 +62,8 @@ export default class TypescriptGenerator {
       const field = fieldMap[fieldName];
       return {
         name: fieldName,
-        type: this.typeFromGraphQLType(field.type)
+        type: this.typeFromGraphQLType(field.type),
+        isConditional: false
       };
     });
 
@@ -92,7 +94,7 @@ export default class TypescriptGenerator {
       keyInheritsNullability?: boolean;
     } = {}
   ) {
-    return fields.map(({ name, description, type }) => {
+    return fields.map(({ name, description, type, isConditional }) => {
       const propertySignatureType = t.TSPropertySignature(
         t.identifier(name),
         t.TSTypeAnnotation(type)
@@ -100,7 +102,7 @@ export default class TypescriptGenerator {
 
       // TODO: Check if this works
       propertySignatureType.optional =
-        keyInheritsNullability && this.isNullableType(type);
+        (keyInheritsNullability && this.isNullableType(type)) || isConditional;
 
       if (this.options.useReadOnlyTypes) {
         propertySignatureType.readonly = true;

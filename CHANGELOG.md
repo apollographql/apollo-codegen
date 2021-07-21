@@ -11,7 +11,7 @@
 - `apollo-codegen-swift`
   - <First `apollo-codegen-swift` related entry goes here>
 - `apollo-codegen-typescript`
-  - <First `apollo-codegen-typescript` related entry goes here>
+  - Generate optional TypeScript fields when @include or @skip directive is used [#1854](https://github.com/apollographql/apollo-tooling/pull/1854)
 - `apollo-codegen-core`
   - <First `apollo-codegen-core` related entry goes here>
 - `apollo-env`

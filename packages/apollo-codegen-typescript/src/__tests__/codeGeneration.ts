@@ -286,6 +286,28 @@ describe("Typescript codeGeneration", () => {
     const output = generateSource(context);
     expect(output).toMatchSnapshot();
   });
+
+  test("@include directive", () => {
+    const context = compile(`
+      fragment SimpleFragment on Character{
+        name @include(if: $includeName)
+      }
+    `);
+
+    const output = generateSource(context);
+    expect(output).toMatchSnapshot();
+  });
+
+  test("@skip directive", () => {
+    const context = compile(`
+      fragment SimpleFragment on Character{
+        name @skip(if: $includeName)
+      }
+    `);
+
+    const output = generateSource(context);
+    expect(output).toMatchSnapshot();
+  });
 });
 
 describe("Typescript codeGeneration local / global", () => {

@@ -1,5 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Typescript codeGeneration @include directive 1`] = `
+Object {
+  "common": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+  "generatedFiles": Array [
+    Object {
+      "content": TypescriptGeneratedFile {
+        "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: SimpleFragment
+// ====================================================
+
+export interface SimpleFragment {
+  __typename: \\"Human\\" | \\"Droid\\";
+  /**
+   * The name of the character
+   */
+  name?: string;
+}
+",
+      },
+      "fileName": "SimpleFragment.ts",
+      "sourcePath": "GraphQL request",
+    },
+  ],
+}
+`;
+
+exports[`Typescript codeGeneration @skip directive 1`] = `
+Object {
+  "common": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+  "generatedFiles": Array [
+    Object {
+      "content": TypescriptGeneratedFile {
+        "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: SimpleFragment
+// ====================================================
+
+export interface SimpleFragment {
+  __typename: \\"Human\\" | \\"Droid\\";
+  /**
+   * The name of the character
+   */
+  name?: string;
+}
+",
+      },
+      "fileName": "SimpleFragment.ts",
+      "sourcePath": "GraphQL request",
+    },
+  ],
+}
+`;
+
 exports[`Typescript codeGeneration fragment spreads with inline fragments 1`] = `
 Object {
   "common": "/* tslint:disable */
