@@ -136,7 +136,8 @@ export function loadQueryDocuments(
 ): DocumentNode[] {
   const sources = inputPaths
     .map(inputPath => {
-      if (fs.lstatSync(inputPath).isDirectory()) {
+      const pathStats = fs.lstatSync(fs.realpathSync(inputPath));
+      if (pathStats.isDirectory() || pathStats.isSymbolicLink()) {
         return null;
       }
 
