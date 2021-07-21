@@ -54,7 +54,7 @@ export function activate(context: ExtensionContext) {
   statusBar = new StatusBar({
     hasActiveTextEditor: Boolean(window.activeTextEditor)
   });
-  outputChannel = window.createOutputChannel("Apollo GraphQL");
+  outputChannel = window.createOutputChannel("Apollo GraphQL Extension");
   Debug.SetOutputConsole(outputChannel);
   clientDisposable = client.start();
 
