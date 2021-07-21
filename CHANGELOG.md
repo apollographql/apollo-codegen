@@ -5,15 +5,15 @@
 - `apollo`
   - <First `apollo` related entry goes here>
 - `apollo-codegen-flow`
-  - <First `apollo-codegen-flow` related entry goes here>
+  - Adding missing `graphql` dependency [#2199](https://github.com/apollographql/apollo-tooling/pull/2199).
 - `apollo-codegen-scala`
-  - <First `apollo-codegen-scala` related entry goes here>
+  - Adding missing `graphql` dependency [#2199](https://github.com/apollographql/apollo-tooling/pull/2199).
 - `apollo-codegen-swift`
-  - <First `apollo-codegen-swift` related entry goes here>
+  - Adding missing `graphql` dependency [#2199](https://github.com/apollographql/apollo-tooling/pull/2199).
 - `apollo-codegen-typescript`
-  - <First `apollo-codegen-typescript` related entry goes here>
+  - Adding missing `graphql` dependency [#2199](https://github.com/apollographql/apollo-tooling/pull/2199).
 - `apollo-codegen-core`
-  - <First `apollo-codegen-core` related entry goes here>
+  - Adding missing `graphql` dependency [#2199](https://github.com/apollographql/apollo-tooling/pull/2199).
 - `apollo-env`
   - <First `apollo-env` related entry goes here>
 - `apollo-graphql`

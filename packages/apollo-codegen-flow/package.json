@@ -22,6 +22,7 @@
     "apollo-codegen-core": "file:../apollo-codegen-core",
     "change-case": "^4.0.0",
     "common-tags": "^1.5.1",
+    "graphql": "^15.4.0",
     "inflected": "^2.0.3"
   },
   "jest": {

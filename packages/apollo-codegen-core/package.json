@@ -24,6 +24,7 @@
     "apollo-language-server": "file:../apollo-language-server",
     "ast-types": "^0.14.0",
     "common-tags": "^1.5.1",
+    "graphql": "^15.4.0",
     "recast": "^0.20.0"
   },
   "jest": {
