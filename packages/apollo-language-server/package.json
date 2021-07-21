@@ -29,7 +29,7 @@
     "apollo-link-error": "^1.1.1",
     "apollo-link-http": "^1.5.5",
     "apollo-server-errors": "^2.0.2",
-    "await-to-js": "^2.0.1",
+    "await-to-js": "^3.0.0",
     "core-js": "^3.0.1",
     "cosmiconfig": "^5.0.6",
     "dotenv": "^8.0.0",
