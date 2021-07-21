@@ -29,6 +29,17 @@ export class EndpointSchemaProvider implements GraphQLSchemaProvider {
       uri: url,
       fetch
     };
+
+    if (!url) {
+      throw new Error(
+        "This command requires either the --endpoint option or the" +
+          "\n--localSchemaFile option to obtain your service's schema." +
+          "\nYou can also provide one of these values in your apollo.config.js file.\n" +
+          "-----------------------------\n" +
+          "For more information, please refer to: https://www.apollographql.com/docs/graph-manager/schema-registry/"
+      );
+    }
+
     if (url.startsWith("https:") && skipSSLValidation) {
       options.fetchOptions = {
         agent: new HTTPSAgent({ rejectUnauthorized: false })
