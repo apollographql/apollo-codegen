@@ -17,7 +17,7 @@
 - `apollo-env`
   - <First `apollo-env` related entry goes here>
 - `apollo-graphql`
-  - <First `apollo-graphql` related entry goes here>
+  - Fixed issue where `transformSchema` crashed when a schema had an interface which implements an interface [#2246](https://github.com/apollographql/apollo-tooling/pull/2246)
 - `apollo-language-server`
   - <First `apollo-language-server` related entry goes here>
 - `apollo-tools`
