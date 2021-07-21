@@ -230,20 +230,32 @@ export abstract class ProjectCommand extends Command {
       referenceID
     };
 
-    if (isServiceConfig(config)) {
-      this.project = new GraphQLServiceProject({
-        config,
-        loadingHandler,
-        rootURI,
-        clientIdentity
-      });
-    } else if (isClientConfig(config)) {
-      this.project = new GraphQLClientProject({
-        config,
-        loadingHandler,
-        rootURI,
-        clientIdentity
-      });
+    if (this.type === "service") {
+      if (isServiceConfig(config)) {
+        this.project = new GraphQLServiceProject({
+          config,
+          loadingHandler,
+          rootURI,
+          clientIdentity
+        });
+      } else {
+        throw new Error(
+          "Unable to execute service command. Please add a service section to the config"
+        );
+      }
+    } else if (this.type === "client") {
+      if (isClientConfig(config)) {
+        this.project = new GraphQLClientProject({
+          config,
+          loadingHandler,
+          rootURI,
+          clientIdentity
+        });
+      } else {
+        throw new Error(
+          "Unable to execute client command. Please add a client section to the config"
+        );
+      }
     } else {
       throw new Error(
         "Unable to resolve project type. Please add either a client or service config. For more information, please refer to https://go.apollo.dev/t/config"
