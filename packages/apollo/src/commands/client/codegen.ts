@@ -109,6 +109,10 @@ export default class Generate extends ClientCommand {
     tsFileExtension: flags.string({
       description:
         'By default, TypeScript will output "ts" files. Set "tsFileExtension" to specify a different file extension, for example "d.ts"'
+    }),
+    keepSchemaEnumOrder: flags.boolean({
+      description: "[default: false] Keep enum order from schema",
+      default: false
     })
   };
 

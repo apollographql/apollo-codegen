@@ -50,7 +50,8 @@ class TypescriptGeneratedFile implements BasicGeneratedFile {
 
 function printEnumsAndInputObjects(
   generator: TypescriptAPIGenerator,
-  typesUsed: GraphQLType[]
+  typesUsed: GraphQLType[],
+  keepSchemaEnumOrder: boolean = false
 ) {
   generator.printer.enqueue(stripIndent`
     //==============================================================
@@ -62,7 +63,7 @@ function printEnumsAndInputObjects(
     .filter(isEnumType)
     .sort()
     .forEach(enumType => {
-      generator.typeAliasForEnumType(enumType);
+      generator.typeAliasForEnumType(enumType, keepSchemaEnumOrder);
     });
 
   typesUsed
@@ -213,7 +214,11 @@ export function generateGlobalSource(
 ): TypescriptGeneratedFile {
   const generator = new TypescriptAPIGenerator(context);
   generator.fileHeader();
-  printEnumsAndInputObjects(generator, context.typesUsed);
+  printEnumsAndInputObjects(
+    generator,
+    context.typesUsed,
+    context.options.keepSchemaEnumOrder
+  );
   const output = generator.printer.printAndClear();
   return new TypescriptGeneratedFile(output);
 }
@@ -242,8 +247,13 @@ export class TypescriptAPIGenerator extends TypescriptGenerator {
     );
   }
 
-  public typeAliasForEnumType(enumType: GraphQLEnumType) {
-    this.printer.enqueue(this.enumerationDeclaration(enumType));
+  public typeAliasForEnumType(
+    enumType: GraphQLEnumType,
+    keepSchemaEnumOrder: boolean
+  ) {
+    this.printer.enqueue(
+      this.enumerationDeclaration(enumType, keepSchemaEnumOrder)
+    );
   }
 
   public typeAliasForInputObjectType(inputObjectType: GraphQLInputObjectType) {

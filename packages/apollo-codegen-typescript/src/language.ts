@@ -28,9 +28,15 @@ export default class TypescriptGenerator {
     );
   }
 
-  public enumerationDeclaration(type: GraphQLEnumType) {
+  public enumerationDeclaration(
+    type: GraphQLEnumType,
+    keepSchemaEnumOrder: boolean
+  ) {
     const { name, description } = type;
-    const enumMembers = sortEnumValues(type.getValues()).map(({ value }) => {
+    const enumSortedMembers = keepSchemaEnumOrder
+      ? type.getValues()
+      : sortEnumValues(type.getValues());
+    const enumMembers = enumSortedMembers.map(({ value }) => {
       return t.TSEnumMember(t.identifier(value), t.stringLiteral(value));
     });
 

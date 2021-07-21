@@ -35,7 +35,7 @@ declare module "graphql/utilities/buildASTSchema" {
 }
 
 export function sortEnumValues(values: GraphQLEnumValue[]): GraphQLEnumValue[] {
-  return values.sort((a, b) =>
+  return Array.from(values).sort((a, b) =>
     a.value < b.value ? -1 : a.value > b.value ? 1 : 0
   );
 }

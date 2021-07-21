@@ -2287,3 +2287,71 @@ export interface ReviewMovieVariables {
   ],
 }
 `;
+exports[`Typescript codeGeneration local / global keep enum order 1`] = `
+Array [
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { Episode } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL query operation: HeroName
+// ====================================================
+
+export interface HeroName_hero {
+  __typename: \\"Human\\" | \\"Droid\\";
+  /**
+   * The name of the character
+   */
+  name: string;
+  /**
+   * The ID of the character
+   */
+  id: string;
+}
+
+export interface HeroName {
+  hero: HeroName_hero | null;
+}
+
+export interface HeroNameVariables {
+  episode?: Episode | null;
+}
+",
+    },
+    "fileName": "HeroName.ts",
+    "sourcePath": "GraphQL request",
+  },
+]
+`;
+
+exports[`Typescript codeGeneration local / global keep enum order 2`] = `
+TypescriptGeneratedFile {
+  "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+/**
+ * The episodes in the Star Wars trilogy
+ */
+export enum Episode {
+  NEWHOPE = \\"NEWHOPE\\",
+  EMPIRE = \\"EMPIRE\\",
+  JEDI = \\"JEDI\\",
+}
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+}
+`;

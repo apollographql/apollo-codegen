@@ -634,4 +634,32 @@ describe("Typescript codeGeneration local / global", () => {
     expect(output).toMatchSnapshot();
     expect(generateGlobalSource(context)).toMatchSnapshot();
   });
+
+  test("keep enum order", () => {
+    const context = compile(
+      `
+      query HeroName($episode: Episode) {
+        hero(episode: $episode) {
+          name
+          id
+        }
+      }
+    `,
+      {
+        mergeInFieldsFromFragmentSpreads: true,
+        addTypename: true,
+        keepSchemaEnumOrder: true
+      }
+    );
+
+    const output = generateLocalSource(context).map(f => ({
+      ...f,
+      content: f.content({
+        outputPath: "/some/file/ComponentA.tsx",
+        globalSourcePath: "/__generated__/globalTypes.ts"
+      })
+    }));
+    expect(output).toMatchSnapshot();
+    expect(generateGlobalSource(context)).toMatchSnapshot();
+  });
 });
