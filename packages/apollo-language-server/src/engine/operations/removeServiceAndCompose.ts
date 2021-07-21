@@ -11,6 +11,7 @@ export const REMOVE_SERVICE_AND_COMPOSE = gql`
         graphVariant: $graphVariant
         name: $name
       ) {
+        didExist
         compositionConfig {
           implementingServiceLocations {
             name

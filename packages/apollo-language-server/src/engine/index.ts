@@ -205,6 +205,14 @@ export class ApolloEngineClient extends GraphQLDataSource {
         throw new Error("Error in response from Apollo");
       }
 
+      if (
+        !data.service.removeImplementingServiceAndTriggerComposition.didExist
+      ) {
+        throw new Error(
+          `Provided ${variables.name} does not exist in graph: ${variables.id}`
+        );
+      }
+
       return data.service.removeImplementingServiceAndTriggerComposition;
     });
   }

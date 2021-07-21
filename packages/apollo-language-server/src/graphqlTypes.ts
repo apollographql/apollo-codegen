@@ -458,6 +458,10 @@ export interface RemoveServiceAndCompose_service_removeImplementingServiceAndTri
 export interface RemoveServiceAndCompose_service_removeImplementingServiceAndTriggerComposition {
   __typename: "CompositionAndRemoveResult";
   /**
+   * Whether the removed implementing service existed
+   */
+  didExist: boolean;
+  /**
    * The produced composition config. Will be null if there are any errors
    */
   compositionConfig: RemoveServiceAndCompose_service_removeImplementingServiceAndTriggerComposition_compositionConfig | null;
