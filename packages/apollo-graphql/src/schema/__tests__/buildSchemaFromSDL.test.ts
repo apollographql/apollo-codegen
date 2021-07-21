@@ -273,6 +273,22 @@ type MutationRoot {
       );
     });
 
+    it(`should not duplicate default directives `, () => {
+      const schema = buildSchemaFromSDL(
+        gql`
+          directive @deprecated(
+            reason: String = "No longer supported"
+          ) on FIELD_DEFINITION | ENUM_VALUE
+        `
+      );
+
+      const namesAsSet = new Set(
+        schema.getDirectives().map(directive => directive.name)
+      );
+      // Set of all names should match the number of elements in the directives array
+      expect(schema.getDirectives().length).toEqual(namesAsSet.size);
+    });
+
     it(`should not allow multiple directive definitions with the same name`, () => {
       expect(() =>
         buildSchemaFromSDL(
