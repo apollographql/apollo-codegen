@@ -100,35 +100,6 @@ jobs:
     steps:
       - common_test_steps
 
-  Build VSCode:
-    docker:
-      - image: cimg/node:12.22.3
-    steps:
-      - oss/install_specific_npm_version:
-          version: '7'
-      - checkout
-      - oss/npm_clean_install_with_caching
-      - run: npm run package-extension:no-clean # don't need to run clean and install
-      - run:
-          name: Moving Extension
-          command: |
-            mkdir packages/vscode-apollo/vsix;
-            mv packages/vscode-apollo/*.vsix packages/vscode-apollo/vsix;
-      - store_artifacts:
-          path: ./packages/vscode-apollo/vsix
-          destination: vscode-extension
-
-  Publish VSCode Extension:
-    docker:
-      - image: cimg/node:12.22.3
-    steps:
-      - oss/install_specific_npm_version:
-          version: '7'
-      - checkout
-      - oss/npm_clean_install_with_caching
-      - run: npm run publish-extension
-
-
   Publish GitHub Release:
     docker:
       - image: cimg/go:1.16.6
@@ -222,8 +193,6 @@ workflows:
           <<: *common_non_publish_filters
       - NodeJS 16:
           <<: *common_non_publish_filters
-      - Build VSCode:
-          <<: *common_non_publish_filters
       - Linting:
           <<: *common_non_publish_filters
       - Query Check:
@@ -244,7 +213,6 @@ workflows:
             - NodeJS 14 Windows
             - NodeJS 14
             - NodeJS 16
-            - Build VSCode
       - Publish GitHub Release:
           <<: *common_publish_filters
           requires:
@@ -258,7 +226,6 @@ workflows:
             - NodeJS 14 Windows
             - NodeJS 14
             - NodeJS 16
-            - Build VSCode
             - Build CLI
       - oss/confirmation:
           name: Confirmation
@@ -277,14 +244,5 @@ workflows:
             # so we have a clear picture of the actual dependency (as multiple go through
             # the Confirmation step).
             - Dry-run
-      - Publish VSCode Extension:
-          <<: *common_publish_filters
-          requires:
-            - Confirmation
-            # This "Build CLI" is also gated behind "Confirmation", but being left here
-            # as a dependency in case "Confirmation" is ever removed from this workflow
-            # so we have a clear picture of the actual dependency (as multiple go through
-            # the Confirmation step).
-            - Build CLI
 
 

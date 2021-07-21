@@ -21,8 +21,6 @@ packages/*/package-lock.json
 
 lerna-debug.log
 
-vscode-apollo-*.vsix
-
 .env
 
 # files generated from tests

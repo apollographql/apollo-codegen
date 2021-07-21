@@ -1,5 +1,7 @@
 # Changelog
 
+> **Note:** Apollo's GraphQL VSCode extension is no longer housed in this repository. It is now maintained separately in [this repo](https://github.com/apollographql/vscode-graphql).
+
 ## Upcoming
 
 - `apollo`
@@ -22,8 +24,6 @@
   - <First `apollo-language-server` related entry goes here>
 - `apollo-tools`
   - <First `apollo-tools` related entry goes here>
-- `vscode-apollo`
-  - <First `vscode-apollo` related entry goes here>
 
 ## apollo-tools@0.5.1
 - Remove dependency on `apollo-env`, so using this package no longer installs polyfills.

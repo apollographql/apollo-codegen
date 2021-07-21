@@ -9,6 +9,6 @@ about: Propose new features or changes to existing features.
 ### Feature requests should include as much detail as possible:
 - [ ] A descriptive title
 - [ ] A description of the problem you're trying to solve, including *why* you think this is a problem
-- [ ] An overview of the suggested solution, including which projects would need changing (e.g. vscode-apollo & apollo-language-server)
+- [ ] An overview of the suggested solution, including which projects would need changing
 - [ ] If the feature changes current behavior, reasons why your solution is better
 -->
