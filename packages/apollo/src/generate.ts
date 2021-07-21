@@ -85,8 +85,11 @@ export default function generate(
     );
 
     if (outputIndividualFiles) {
-      writeGeneratedFiles(generator.generatedFiles, outputPath, "\n");
-      writtenFiles += Object.keys(generator.generatedFiles).length;
+      writtenFiles += writeGeneratedFiles(
+        generator.generatedFiles,
+        outputPath,
+        "\n"
+      );
     } else {
       fs.writeFileSync(outputPath, generator.output.concat("\n"));
       writtenFiles += 1;
@@ -119,9 +122,7 @@ export default function generate(
         };
       });
 
-      writeGeneratedFiles(outFiles, path.resolve("."));
-
-      writtenFiles += Object.keys(outFiles).length;
+      writtenFiles += writeGeneratedFiles(outFiles, path.resolve("."));
     } else if (
       fs.existsSync(outputPath) &&
       fs.statSync(outputPath).isDirectory()
@@ -132,9 +133,7 @@ export default function generate(
         };
       });
 
-      writeGeneratedFiles(outFiles, outputPath);
-
-      writtenFiles += Object.keys(outFiles).length;
+      writtenFiles += writeGeneratedFiles(outFiles, outputPath);
     } else {
       fs.writeFileSync(
         outputPath,
@@ -195,9 +194,7 @@ export default function generate(
         };
       });
 
-      writeGeneratedFiles(outFiles, path.resolve("."));
-
-      writtenFiles += Object.keys(outFiles).length;
+      writtenFiles += writeGeneratedFiles(outFiles, path.resolve("."));
     } else {
       fs.writeFileSync(
         outputPath,
@@ -240,13 +237,21 @@ function writeGeneratedFiles(
   generatedFiles: { [fileName: string]: BasicGeneratedFile },
   outputDirectory: string,
   terminator: string = ""
-) {
+): number {
+  let writtenFiles = 0;
   for (const [fileName, generatedFile] of Object.entries(generatedFiles)) {
-    fs.writeFileSync(
-      path.join(outputDirectory, fileName),
-      generatedFile.output.concat(terminator)
-    );
+    const filePath = path.join(outputDirectory, fileName);
+    let shouldWrite = true;
+    if (fs.existsSync(filePath)) {
+      const existingContent = fs.readFileSync(filePath, { encoding: "utf-8" });
+      shouldWrite = existingContent !== generatedFile.output;
+    }
+    if (shouldWrite) {
+      fs.writeFileSync(filePath, generatedFile.output.concat(terminator));
+      writtenFiles += 1;
+    }
   }
+  return writtenFiles;
 }
 
 interface OperationIdsMap {
