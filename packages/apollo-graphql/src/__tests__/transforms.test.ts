@@ -1,6 +1,10 @@
 import { default as gql, disableFragmentWarnings } from "graphql-tag";
 
-import { printWithReducedWhitespace, hideLiterals } from "../transforms";
+import {
+  printWithReducedWhitespace,
+  hideLiterals,
+  hideStringAndNumericLiterals
+} from "../transforms";
 
 // The gql duplicate fragment warning feature really is just warnings; nothing
 // breaks if you turn it off in tests.
@@ -44,7 +48,13 @@ describe("hideLiterals", () => {
       name: "full test",
       input: gql`
         query Foo($b: Int, $a: Boolean) {
-          user(name: "hello", age: 5) {
+          user(
+            name: "hello"
+            age: 5
+            pct: 0.4
+            lst: ["a", "b", "c"]
+            obj: { a: "a", b: 1 }
+          ) {
             ...Bar
             ... on User {
               hello
@@ -52,6 +62,13 @@ describe("hideLiterals", () => {
             }
             tz
             aliased: name
+            withInputs(
+              str: "hi"
+              int: 2
+              flt: 0.3
+              lst: ["x", "y", "z"]
+              obj: { q: "r", s: 1 }
+            )
           }
         }
 
@@ -65,13 +82,68 @@ describe("hideLiterals", () => {
         }
       `,
       output:
-        'query Foo($b:Int,$a:Boolean){user(name:"",age:0){...Bar...on User{hello bee}tz aliased:name}}' +
+        'query Foo($b:Int,$a:Boolean){user(name:"",age:0,pct:0,lst:[],obj:{}){...Bar...on User{hello bee}tz aliased:name ' +
+        'withInputs(str:"",int:0,flt:0,lst:[],obj:{})}}' +
         "fragment Bar on User{age@skip(if:$a)...Nested}fragment Nested on User{blah}"
     }
   ];
   cases.forEach(({ name, input, output }) => {
     test(name, () => {
       expect(printWithReducedWhitespace(hideLiterals(input))).toEqual(output);
+    });
+  });
+});
+
+describe("hideStringAndNumericLiterals", () => {
+  const cases = [
+    {
+      name: "full test",
+      input: gql`
+        query Foo($b: Int, $a: Boolean) {
+          user(
+            name: "hello"
+            age: 5
+            pct: 0.4
+            lst: ["a", "b", "c"]
+            obj: { a: "a", b: 1 }
+          ) {
+            ...Bar
+            ... on User {
+              hello
+              bee
+            }
+            tz
+            aliased: name
+            withInputs(
+              str: "hi"
+              int: 2
+              flt: 0.3
+              lst: ["", "", ""]
+              obj: { q: "", s: 0 }
+            )
+          }
+        }
+
+        fragment Bar on User {
+          age @skip(if: $a)
+          ...Nested
+        }
+
+        fragment Nested on User {
+          blah
+        }
+      `,
+      output:
+        'query Foo($b:Int,$a:Boolean){user(name:"",age:0,pct:0,lst:["","",""],obj:{a:"",b:0}){...Bar...on User{hello bee}tz aliased:name ' +
+        'withInputs(str:"",int:0,flt:0,lst:["","",""],obj:{q:"",s:0})}}' +
+        "fragment Bar on User{age@skip(if:$a)...Nested}fragment Nested on User{blah}"
+    }
+  ];
+  cases.forEach(({ name, input, output }) => {
+    test(name, () => {
+      expect(
+        printWithReducedWhitespace(hideStringAndNumericLiterals(input))
+      ).toEqual(output);
     });
   });
 });
