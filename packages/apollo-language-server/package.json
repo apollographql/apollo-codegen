@@ -28,7 +28,7 @@
     "apollo-link-context": "^1.0.9",
     "apollo-link-error": "^1.1.1",
     "apollo-link-http": "^1.5.5",
-    "apollo-server-errors": "^2.0.2",
+    "apollo-server-errors": "^3.0.0",
     "await-to-js": "^2.0.1",
     "core-js": "^3.0.1",
     "cosmiconfig": "^5.0.6",
