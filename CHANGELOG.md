@@ -3,7 +3,7 @@
 ## Upcoming
 
 - `apollo`
-  - <First `apollo` related entry goes here>
+  - Fixed [#1980](https://github.com/apollographql/apollo-tooling/issues/1980): codegen now returns non-zero code when errors have been found.
 - `apollo-codegen-flow`
   - <First `apollo-codegen-flow` related entry goes here>
 - `apollo-codegen-scala`

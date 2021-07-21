@@ -34,7 +34,8 @@ const {
   clientSideSchema,
   clientSideSchemaQuery,
   clientSideOnlySchema,
-  clientSideOnlyQuery
+  clientSideOnlyQuery,
+  errorQuery
 } = resolveFiles({
   graphQLSchema: "../../service/__tests__/fixtures/schema.graphql",
   simpleQuery: "./fixtures/simpleQuery.graphql",
@@ -43,7 +44,8 @@ const {
   clientSideSchema: "./fixtures/clientSideSchema.graphql",
   clientSideSchemaQuery: "./fixtures/clientSideSchemaQuery.graphql",
   clientSideOnlySchema: "./fixtures/clientSideOnlySchema.graphql",
-  clientSideOnlyQuery: "./fixtures/clientSideOnlyQuery.graphql"
+  clientSideOnlyQuery: "./fixtures/clientSideOnlyQuery.graphql",
+  errorQuery: "./fixtures/errorQuery.graphql"
 });
 
 // introspection results of a schema, JSON.stringified
@@ -773,4 +775,20 @@ describe("error handling", () => {
     .command(["client:codegen", "--config=my.config.js", "output-file"])
     .catch(err => expect(err.message).toMatch(/Missing required flag/))
     .it("errors when no target specified");
+
+  test
+    .fs({
+      ...defaultFiles,
+      "./errorQuery.graphql": errorQuery.toString()
+    })
+    .command(["client:codegen", "--config=my.config.js", "--target=typescript"])
+    .catch(err => {
+      const { message } = err;
+      expect(message).toMatch(/Validation of GraphQL query document failed/);
+      expect(message).toMatch(
+        /Cannot query field "nosuchprop" on type "Query"/
+      );
+      expect(message).toMatch(/errorQuery\.graphql:2:3/);
+    })
+    .it("errors with an an invalid query");
 });

@@ -1,4 +1,5 @@
 import { fs } from "apollo-codegen-core/lib/localfs";
+import { getValidationErrors } from "apollo-language-server";
 import path from "path";
 import { GraphQLSchema, DocumentNode, print } from "graphql";
 import URI from "vscode-uri";
@@ -58,8 +59,14 @@ export default function generate(
   nextToSources: boolean | string,
   options: GenerationOptions
 ): number {
+  const errors = getValidationErrors(schema, document);
+  if (errors && errors.length > 0) {
+    const messages = errors.map(e => e.toString()).join("\n");
+    throw new Error(
+      `Validation of GraphQL query document failed:\n${messages}`
+    );
+  }
   let writtenFiles = 0;
-  validateQueryDocument(schema, document);
 
   const { rootPath = process.cwd() } = options;
   if (outputPath.split(".").length <= 1 && !fs.existsSync(outputPath)) {

@@ -1,0 +1,3 @@
+query ErrornousQuery {
+  nosuchprop
+}
