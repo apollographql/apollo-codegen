@@ -19,11 +19,11 @@
 - `apollo-graphql`
   - <First `apollo-graphql` related entry goes here>
 - `apollo-language-server`
-  - <First `apollo-language-server` related entry goes here>
+  - Improved hover and autocomplete features [#1997](https://github.com/apollographql/apollo-tooling/pull/1997)
 - `apollo-tools`
   - <First `apollo-tools` related entry goes here>
 - `vscode-apollo`
-  - <First `vscode-apollo` related entry goes here>
+  - Improved hover and autocomplete features [#1997](https://github.com/apollographql/apollo-tooling/pull/1997)
 
 ## apollo-tools@0.5.1
 - Remove dependency on `apollo-env`, so using this package no longer installs polyfills.

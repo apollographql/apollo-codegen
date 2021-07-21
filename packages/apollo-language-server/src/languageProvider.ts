@@ -15,7 +15,8 @@ import {
   CodeAction,
   CodeActionKind,
   MarkupKind,
-  CompletionItemKind
+  CompletionItemKind,
+  MarkedString
 } from "vscode-languageserver";
 
 // should eventually be moved into this package, since we're overriding a lot of the existing behavior here
@@ -56,7 +57,15 @@ import {
   isTypeSystemDefinitionNode,
   isTypeSystemExtensionNode,
   GraphQLError,
-  DirectiveLocation
+  DirectiveLocation,
+  getNamedType,
+  TypeDefinitionNode,
+  GraphQLOutputType,
+  isScalarType,
+  isUnionType,
+  isInputType,
+  isInterfaceType,
+  isEnumType
 } from "graphql";
 import { highlightNodeForNode } from "./utilities/graphql";
 
@@ -98,6 +107,49 @@ function symbolForFieldDefinition(
     range: rangeForASTNode(definition),
     selectionRange: rangeForASTNode(definition)
   };
+}
+
+function print(
+  node?: ASTNode | TypeDefinitionNode | null,
+  description?: string | null,
+  type?: string
+): string {
+  let defn = "";
+  if (node && node.loc && node.loc.source && node.loc.source.body) {
+    defn = node.loc.source.body.substr(
+      node.loc.start,
+      node.loc.end - node.loc.start
+    );
+  }
+  return [printDescription(description), type ? `(${type}) ${defn}` : defn]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function printDescription(description?: string | null): string {
+  return description ? `# ${description}` : "";
+}
+
+function typeToKind(field: GraphQLField<void, void>) {
+  const type = field.type;
+
+  if (field.args.length) {
+    return CompletionItemKind.Method;
+  }
+
+  if (hasFields(type)) {
+    return CompletionItemKind.Class;
+  }
+
+  if (isInterfaceType(type)) {
+    return CompletionItemKind.Interface;
+  }
+
+  if (isEnumType(type)) {
+    return CompletionItemKind.Enum;
+  }
+
+  return CompletionItemKind.Field;
 }
 
 export class GraphQLLanguageProvider {
@@ -177,6 +229,13 @@ export class GraphQLLanguageProvider {
         if (!suggestedField) {
           return suggest;
         } else {
+          const argsString =
+            suggestedField.args.length > 0
+              ? `(${suggestedField.args
+                  .map(a => `${a.name}: ${a.type}`)
+                  .join(", ")})`
+              : "";
+
           const requiredArgs = suggestedField.args.filter(a =>
             isNonNullType(a.type)
           );
@@ -199,6 +258,8 @@ export class GraphQLLanguageProvider {
 
           return {
             ...suggest,
+            detail: `${suggestedField.name}${argsString}: ${suggestedField.type}`,
+            kind: suggest.kind || typeToKind(suggestedField),
             insertText: snippet,
             insertTextFormat: InsertTextFormat.Snippet
           };
@@ -324,12 +385,11 @@ export class GraphQLLanguageProvider {
                 directive => directive.name.value === "client"
               );
 
-            const content = [
-              [
-                `\`\`\`graphql`,
-                `${parentType}.${fieldDef.name}${argsString}: ${fieldDef.type}`,
-                `\`\`\``
-              ].join("\n")
+            const contents: MarkedString[] = [
+              {
+                language: "graphql",
+                value: `${parentType}.${fieldDef.name}${argsString}: ${fieldDef.type}`
+              }
             ];
 
             const info: string[] = [];
@@ -341,15 +401,20 @@ export class GraphQLLanguageProvider {
             }
 
             if (info.length !== 0) {
-              content.push(info.join(" "));
+              contents.push(info.join(" "));
             }
 
-            if (fieldDef.description) {
-              content.push(fieldDef.description);
+            // include type full definition
+            const type = getNamedType(fieldDef.type);
+            if (type) {
+              contents.push({
+                language: "graphql",
+                value: print(type.astNode, type.description)
+              });
             }
 
             return {
-              contents: content.join("\n\n---\n\n"),
+              contents,
               range: rangeForASTNode(highlightNodeForNode(node))
             };
           }
