@@ -56,6 +56,10 @@
 
 - This package no longer depends on `apollo-env` to avoid the side-effects of its polyfills.
 
+## `apollo@2.32.12`
+  - `--remoteUrl` in `service:check` and `service:push` overrides the current remove URL otherwise read through [env-ci](https://www.npmjs.com/package/env-ci).
+  - `service:check` now takes `--author` and `--commitId` correctly when checking a monolithic schema.
+
 ## `apollo@2.32.5`
 
 - `apollo@2.32.5`

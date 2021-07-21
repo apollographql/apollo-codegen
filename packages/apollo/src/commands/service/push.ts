@@ -34,6 +34,9 @@ export default class ServicePush extends ProjectCommand {
     branch: flags.string({
       description: "The branch name to associate with this publication"
     }),
+    remoteUrl: flags.string({
+      description: "The URL of your project's remote repository"
+    }),
     commitId: flags.string({
       description:
         "The SHA-1 hash of the commit to associate with this publication"
@@ -93,7 +96,8 @@ export default class ServicePush extends ProjectCommand {
             ...gitInfoFromEnv,
             ...(flags.author ? { committer: flags.author } : undefined),
             ...(flags.branch ? { branch: flags.branch } : undefined),
-            ...(flags.commitId ? { commit: flags.commitId } : undefined)
+            ...(flags.commitId ? { commit: flags.commitId } : undefined),
+            ...(flags.remoteUrl ? { remoteUrl: flags.remoteUrl } : undefined)
           };
 
           // handle partial schema uploading

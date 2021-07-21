@@ -253,6 +253,9 @@ export default class ServiceCheck extends ProjectCommand {
     branch: flags.string({
       description: "The branch name to associate with this check"
     }),
+    remoteUrl: flags.string({
+      description: "The URL of your project's remote repository"
+    }),
     commitId: flags.string({
       description: "The SHA-1 hash of the commit to associate with this check"
     }),
@@ -387,7 +390,8 @@ export default class ServiceCheck extends ProjectCommand {
                     ...gitInfoFromEnv,
                     ...(flags.author ? { committer: flags.author } : undefined),
                     ...(flags.branch ? { branch: flags.branch } : undefined),
-                    ...(flags.commitId ? { commit: flags.commitId } : undefined)
+                    ...(flags.commitId ? { commit: flags.commitId } : undefined),
+                    ...(flags.remoteUrl ? { remoteUrl: flags.remoteUrl } : undefined)
                   }
                 });
 
@@ -483,10 +487,10 @@ export default class ServiceCheck extends ProjectCommand {
                   tag: config.variant,
                   gitContext: {
                     ...gitInfoFromEnv,
-                    ...(flags.committer
-                      ? { committer: flags.committer }
-                      : undefined),
-                    ...(flags.branch ? { branch: flags.branch } : undefined)
+                    ...(flags.author ? { committer: flags.author } : undefined),
+                    ...(flags.branch ? { branch: flags.branch } : undefined),
+                    ...(flags.commitId ? { commit: flags.commitId } : undefined),
+                    ...(flags.remoteUrl ? { remoteUrl: flags.remoteUrl } : undefined)
                   },
                   ...(historicParameters && { historicParameters }),
                   ...schemaCheckSchemaVariables
