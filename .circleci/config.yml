@@ -30,7 +30,7 @@ jobs:
   # Platform tests, each with the same tests but different platform or version.
   NodeJS 12:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - common_test_steps
 
@@ -81,7 +81,7 @@ jobs:
 
   NodeJS 14:
     docker:
-      - image: cimg/node:14.17.3
+      - image: cimg/node:16.5.0
     steps:
       - common_test_steps
       # We will save the results of this one particular invocation to use in
@@ -96,13 +96,13 @@ jobs:
 
   NodeJS 16:
     docker:
-      - image: cimg/node:16.0.0
+      - image: cimg/node:16.5.0
     steps:
       - common_test_steps
 
   Build VSCode:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - oss/install_specific_npm_version:
           version: '7'
@@ -120,7 +120,7 @@ jobs:
 
   Publish VSCode Extension:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - oss/install_specific_npm_version:
           version: '7'
@@ -150,7 +150,7 @@ jobs:
   # Other tests, unrelated to typical code tests.
   Linting:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - oss/install_specific_npm_version:
           version: '7'
@@ -161,7 +161,7 @@ jobs:
 
   Query Check:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - oss/install_specific_npm_version:
           version: '7'
@@ -178,7 +178,7 @@ jobs:
 
   Generated Types Check:
     docker:
-      - image: cimg/node:12.22.3
+      - image: cimg/node:16.5.0
     steps:
       - oss/install_specific_npm_version:
           version: '7'
