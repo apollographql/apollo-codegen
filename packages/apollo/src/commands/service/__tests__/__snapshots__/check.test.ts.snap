@@ -172,6 +172,14 @@ exports[`service:check integration federated should report composition success c
     \\"queryCountThresholdPercentage\\": 0
   }
 }
+╔════════╤══════════════════╤═══════════════════════════════════════════════════════════════════════════════╗
+║ Change │ Code             │ Description                                                                   ║
+╟────────┼──────────────────┼───────────────────────────────────────────────────────────────────────────────╢
+║ PASS   │ ARG_CHANGED_TYPE │ \`Query.launches\` argument \`after\` has changed type from \`String\` to \`String!\` ║
+╚════════╧══════════════════╧═══════════════════════════════════════════════════════════════════════════════╝
+
+
+View full details at: https://engine-staging.apollographql.com/service/justin-fullstack-tutorial/check/3acd7765-61b2-4f1a-9227-8b288e42bfdc
 "
 `;
 
@@ -303,6 +311,14 @@ exports[`service:check integration non-federated should report traffic non-error
     \\"queryCountThresholdPercentage\\": 0
   }
 }
+╔════════╤══════════════════╤═══════════════════════════════════════════════════════════════════════════════╗
+║ Change │ Code             │ Description                                                                   ║
+╟────────┼──────────────────┼───────────────────────────────────────────────────────────────────────────────╢
+║ PASS   │ ARG_CHANGED_TYPE │ \`Query.launches\` argument \`after\` has changed type from \`String\` to \`String!\` ║
+╚════════╧══════════════════╧═══════════════════════════════════════════════════════════════════════════════╝
+
+
+View full details at: https://engine-staging.apollographql.com/service/justin-fullstack-tutorial/check/3acd7765-61b2-4f1a-9227-8b288e42bfdc
 "
 `;
 

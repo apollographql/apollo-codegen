@@ -35,8 +35,7 @@ export interface SimpleQuery {
 exports[`client:codegen generates operation IDs for swift files when flag is set 1`] = `
 "{
   \\"4ef6e283add42442bd40bb38b80d6a8a6c039581eef7bdc431bd05d4375e8265\\": {
-    \\"name\\": \\"QueryWithFragments\\",
-    \\"source\\": \\"query QueryWithFragments {\\\\n  hello\\\\n  serverSideField {\\\\n    __typename\\\\n    ...ServerFieldFragment\\\\n  }\\\\n}\\\\nfragment ServerFieldFragment on ServerField {\\\\n  __typename\\\\n  serverData\\\\n}\\"
+    \\"name\\": \\"QueryWithFragments\\"
   }
 }"
 `;
@@ -96,7 +95,6 @@ export type SimpleQuery = {
 exports[`client:codegen writes json operations 1`] = `
 Object {
   "fragments": Array [],
-  "interfaceTypes": Array [],
   "operations": Array [
     Object {
       "fields": Array [
@@ -126,14 +124,12 @@ Object {
     },
   ],
   "typesUsed": Array [],
-  "unionTypes": Array [],
 }
 `;
 
 exports[`client:codegen writes json operations with typeNode (json-modern) 1`] = `
 Object {
   "fragments": Array [],
-  "interfaceTypes": Array [],
   "operations": Array [
     Object {
       "fields": Array [
@@ -173,7 +169,6 @@ Object {
     },
   ],
   "typesUsed": Array [],
-  "unionTypes": Array [],
 }
 `;
 

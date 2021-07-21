@@ -3,7 +3,8 @@
 ## Upcoming
 
 - `apollo`
-  - <First `apollo` related entry goes here>
+  - Update the `--markdown` and `--json` options to have non-zero exit codes when `service:check` fails
+  - Update exit codes in `service:check` to differentiate composition failure (exit code 4) from breaking operations (exit code 1)
 - `apollo-codegen-flow`
   - <First `apollo-codegen-flow` related entry goes here>
 - `apollo-codegen-scala`

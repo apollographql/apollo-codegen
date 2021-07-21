@@ -618,10 +618,12 @@ export default class ServiceCheck extends ProjectCommand {
 
     if (shouldOutputJson) {
       if (compositionErrors) {
-        return this.log(JSON.stringify({ errors: compositionErrors }, null, 2));
+        this.log(JSON.stringify({ errors: compositionErrors }, null, 2));
+        if (!shouldAlwaysExit0) this.exit(4);
+        return;
       }
 
-      return this.log(
+      this.log(
         JSON.stringify(
           {
             targetUrl:
@@ -636,6 +638,11 @@ export default class ServiceCheck extends ProjectCommand {
           2
         )
       );
+      if (
+        !shouldAlwaysExit0 &&
+        checkSchemaResult.diffToPrevious.severity === "FAILURE"
+      )
+        this.exit(1);
     } else if (shouldOutputMarkdown) {
       if (!graphID) {
         throw new Error(
@@ -650,7 +657,7 @@ export default class ServiceCheck extends ProjectCommand {
           );
         }
 
-        return this.log(
+        this.log(
           formatCompositionErrorsMarkdown({
             compositionErrors,
             graphName: graphID,
@@ -658,9 +665,11 @@ export default class ServiceCheck extends ProjectCommand {
             tag: config.variant
           })
         );
+        this.exit(4);
+        return;
       }
 
-      return this.log(
+      this.log(
         formatMarkdown({
           checkSchemaResult,
           graphName: graphID,
@@ -669,6 +678,12 @@ export default class ServiceCheck extends ProjectCommand {
           graphCompositionID
         })
       );
+      if (
+        !shouldAlwaysExit0 &&
+        checkSchemaResult.diffToPrevious.severity === "FAILURE"
+      )
+        this.exit(1);
+      return;
     }
 
     if (compositionErrors) {
@@ -711,7 +726,7 @@ export default class ServiceCheck extends ProjectCommand {
       if (shouldAlwaysExit0) {
         return;
       }
-      this.exit(1);
+      this.exit(4);
     } else {
       this.log(formatHumanReadable({ checkSchemaResult, graphCompositionID }));
 

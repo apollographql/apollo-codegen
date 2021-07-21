@@ -465,7 +465,7 @@ describe("service:check", () => {
 
           expect.assertions(2);
 
-          // markdown formatted output should not throw
+          // markdown formatted output should throw
           await expect(
             ServiceCheck.run([
               ...cliKeyParameter,
@@ -473,7 +473,7 @@ describe("service:check", () => {
               `--endpoint=${localURL}/graphql`,
               "--markdown"
             ])
-          ).resolves.not.toThrow();
+          ).rejects.toThrow();
 
           // Inline snapshots don't work here due to https://github.com/facebook/jest/issues/6744.
           expect(uncaptureApplicationOutput()).toMatchSnapshot();
@@ -485,7 +485,7 @@ describe("service:check", () => {
 
           expect.assertions(2);
 
-          // JSON formatted output should not throw
+          // JSON formatted output should throw
           await expect(
             ServiceCheck.run([
               ...cliKeyParameter,
@@ -493,7 +493,7 @@ describe("service:check", () => {
               `--endpoint=${localURL}/graphql`,
               "--json"
             ])
-          ).resolves.not.toThrow();
+          ).rejects.toThrow();
 
           // Inline snapshots don't work here due to https://github.com/facebook/jest/issues/6744.
           expect(uncaptureApplicationOutput()).toMatchSnapshot();
@@ -634,10 +634,10 @@ describe("service:check", () => {
           mockNonFederatedFailure();
           expect.assertions(2);
 
-          // markdown formatted output should not throw
+          // markdown formatted output should throw
           await expect(
             ServiceCheck.run([...cliKeyParameter, "--markdown"])
-          ).resolves.not.toThrow();
+          ).rejects.toThrow();
 
           // Inline snapshots don't work here due to https://github.com/facebook/jest/issues/6744.
           expect(uncaptureApplicationOutput()).toMatchSnapshot();
@@ -648,10 +648,10 @@ describe("service:check", () => {
           mockNonFederatedFailure();
           expect.assertions(2);
 
-          // JSON formatted output should not throw
+          // JSON formatted output should throw
           await expect(
             ServiceCheck.run([...cliKeyParameter, "--json"])
-          ).resolves.not.toThrow();
+          ).rejects.toThrow();
 
           // Inline snapshots don't work here due to https://github.com/facebook/jest/issues/6744.
           expect(uncaptureApplicationOutput()).toMatchSnapshot();
