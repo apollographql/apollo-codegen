@@ -1830,6 +1830,211 @@ export interface ReviewInput {
 }
 `;
 
+exports[`Typescript codeGeneration local / global unused import 1`] = `
+Array [
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { ManProps } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL query operation: man
+// ====================================================
+
+export interface man_man {
+  __typename: \\"Man\\";
+  manProp: ManProps | null;
+}
+
+export interface man {
+  man: man_man;
+}
+",
+    },
+    "fileName": "man.ts",
+    "sourcePath": "GraphQL request",
+  },
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { ManProps, WomanProps } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL fragment: HumanFragment
+// ====================================================
+
+export interface HumanFragment_Man {
+  __typename: \\"Man\\";
+  manProp: ManProps | null;
+}
+
+export interface HumanFragment_Woman {
+  __typename: \\"Woman\\";
+  womanProp: WomanProps | null;
+}
+
+export type HumanFragment = HumanFragment_Man | HumanFragment_Woman;
+",
+    },
+    "fileName": "HumanFragment.ts",
+    "sourcePath": "GraphQL request",
+  },
+]
+`;
+
+exports[`Typescript codeGeneration local / global unused import 2`] = `
+TypescriptGeneratedFile {
+  "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+export enum ManProps {
+  first = \\"first\\",
+  second = \\"second\\",
+}
+
+export enum WomanProps {
+  fourth = \\"fourth\\",
+  third = \\"third\\",
+}
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+}
+`;
+
+exports[`Typescript codeGeneration local / global unused import with nested fragments 1`] = `
+Array [
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { ManProps } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL query operation: man
+// ====================================================
+
+export interface man_man {
+  __typename: \\"Man\\";
+  manProp: ManProps | null;
+}
+
+export interface man {
+  man: man_man;
+}
+",
+    },
+    "fileName": "man.ts",
+    "sourcePath": "GraphQL request",
+  },
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { ManProps, WomanProps } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL fragment: HumanFragment
+// ====================================================
+
+export interface HumanFragment_Man {
+  __typename: \\"Man\\";
+  manProp: ManProps | null;
+}
+
+export interface HumanFragment_Woman {
+  __typename: \\"Woman\\";
+  womanProp: WomanProps | null;
+}
+
+export type HumanFragment = HumanFragment_Man | HumanFragment_Woman;
+",
+    },
+    "fileName": "HumanFragment.ts",
+    "sourcePath": "GraphQL request",
+  },
+  Object {
+    "content": TypescriptGeneratedFile {
+      "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+import { ManProps, WomanProps } from \\"./../../__generated__/globalTypes\\";
+
+// ====================================================
+// GraphQL fragment: NestedHumanFragment
+// ====================================================
+
+export interface NestedHumanFragment_Man {
+  __typename: \\"Man\\";
+  manProp: ManProps | null;
+}
+
+export interface NestedHumanFragment_Woman {
+  __typename: \\"Woman\\";
+  womanProp: WomanProps | null;
+}
+
+export type NestedHumanFragment = NestedHumanFragment_Man | NestedHumanFragment_Woman;
+",
+    },
+    "fileName": "NestedHumanFragment.ts",
+    "sourcePath": "GraphQL request",
+  },
+]
+`;
+
+exports[`Typescript codeGeneration local / global unused import with nested fragments 2`] = `
+TypescriptGeneratedFile {
+  "fileContents": "/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+//==============================================================
+// START Enums and Input Objects
+//==============================================================
+
+export enum ManProps {
+  first = \\"first\\",
+  second = \\"second\\",
+}
+
+export enum WomanProps {
+  fourth = \\"fourth\\",
+  third = \\"third\\",
+}
+
+//==============================================================
+// END Enums and Input Objects
+//==============================================================
+",
+}
+`;
+
 exports[`Typescript codeGeneration multiple files 1`] = `"generatedFiles"`;
 
 exports[`Typescript codeGeneration multiple files 2`] = `
